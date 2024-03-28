@@ -22,6 +22,6 @@ public class OutlookMailService implements MailService {
 
     public void sentEmail(String to, String body) {
         // TODO: Sent Email Notification
-        System.out.println("Sent Email!!! by outlook");
+        System.out.println("Sent Email!!! by outlook naja");
     }
 }

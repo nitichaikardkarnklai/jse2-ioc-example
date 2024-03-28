@@ -1,14 +1,16 @@
 package com.usermanagement.usermanagement.user;
 
 import com.usermanagement.usermanagement.mail.MailService;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
-@Component
+@Service
 public class UserService {
 
     private final MailService mailService;
@@ -20,7 +22,7 @@ public class UserService {
             )
     );
 
-    public UserService(MailService mailService) {
+    public UserService(@Qualifier("googleMail") MailService mailService) {
         this.mailService = mailService;
     }
 
