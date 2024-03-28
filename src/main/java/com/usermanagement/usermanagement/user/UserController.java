@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Optional;
 
 @RestController
+@RequestMapping("/api/users")
 public class UserController {
     private final UserService userService;
 
@@ -17,7 +18,7 @@ public class UserController {
 
     // READ›
     // GET: http://localhost:8080/api/users
-    @GetMapping("api/users")
+    @GetMapping("")
     public List<User> getUsers(@RequestParam("active") Optional<Boolean> active) {
         return userService.getUsers(active);
     }
@@ -25,7 +26,7 @@ public class UserController {
     // CREATE
     // POST: http://localhost:8080/api/users
     // req body => {name, age}
-    @PostMapping("api/users")
+    @PostMapping("")
     public User createUser(@RequestBody UserRequest request) {
         return userService.createUser(request);
     }
@@ -33,7 +34,7 @@ public class UserController {
     // UPDATE
     // PUT: http://localhost:8080/api/users/{id}
     // req body => {name}
-    @PutMapping("api/users/{id}")
+    @PutMapping("/{id}")
     public Message editUser(@PathVariable("id") int id, @RequestBody UserRequest request) {
         Optional<User> user = userService.findUserById(id);
         if (user.isPresent()) {
@@ -47,7 +48,7 @@ public class UserController {
 
     // DELETE
     // DELETE: http://localhost:8080/api/users/{id}
-    @DeleteMapping("api/users/{id}")
+    @DeleteMapping("/{id}")
     public Message removeUser(@PathVariable("id") int id) {
         Boolean isRemoved = userService.deleteUser(id);
         return isRemoved ? new Message("user deleted") : new Message("id not found");
