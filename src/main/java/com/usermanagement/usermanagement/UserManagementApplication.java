@@ -6,6 +6,7 @@ import com.usermanagement.usermanagement.mail.OutlookMailService;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Primary;
 
 @SpringBootApplication
 public class UserManagementApplication {
@@ -26,6 +27,7 @@ public class UserManagementApplication {
 //    }
 
     @Bean
+    @Primary
     public MailService outlookMail() {
         return new OutlookMailService();
     }
