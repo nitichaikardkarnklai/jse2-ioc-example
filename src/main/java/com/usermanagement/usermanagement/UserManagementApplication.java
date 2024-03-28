@@ -15,10 +15,10 @@ public class UserManagementApplication {
         SpringApplication.run(UserManagementApplication.class, args);
     }
 
-//    @Bean
-//    public MailService mailService() {
-//        return new GoogleMailService();
-//    }
+    @Bean
+    public MailService mailService() {
+        return new GoogleMailService();
+    }
 
 //    @Bean
 //    public MailService mailService() {
