@@ -27,7 +27,6 @@ public class UserManagementApplication {
 //    }
 
     @Bean
-    @Primary
     public MailService outlookMail() {
         return new OutlookMailService();
     }

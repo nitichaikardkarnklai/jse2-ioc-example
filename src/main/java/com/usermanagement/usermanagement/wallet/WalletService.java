@@ -3,6 +3,9 @@ package com.usermanagement.usermanagement.wallet;
 import com.usermanagement.usermanagement.exception.DuplicationException;
 import com.usermanagement.usermanagement.exception.InternalServiceException;
 import com.usermanagement.usermanagement.exception.NotFoundException;
+import com.usermanagement.usermanagement.mail.MailService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.PathVariable;
 
@@ -19,6 +22,11 @@ public class WalletService {
                     new Wallet(3,"Penny wallet", "savingpenny@gmail.com"))
     );
 
+    private final MailService mailService;
+
+    public WalletService(@Qualifier("googleMail") MailService mailService) {
+        this.mailService = mailService;
+    }
 
     public List<Wallet> getWalletList() {
         try {
@@ -46,6 +54,9 @@ public class WalletService {
             int nextId = maxId.orElse(0) + 1;
             Wallet wallet = new Wallet(nextId,requestDto.name(), requestDto.email());
             walletList.add(wallet);
+
+            mailService.sentEmail("admin@wallet.com", "New wallet created");
+
             return wallet;
     }
 

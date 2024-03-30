@@ -22,7 +22,7 @@ public class UserService {
             )
     );
 
-    public UserService(MailService mailService) {
+    public UserService(@Qualifier("googleMail") MailService mailService) {
         this.mailService = mailService;
     }
 
