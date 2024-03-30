@@ -6,6 +6,7 @@ import com.usermanagement.usermanagement.exception.NotFoundException;
 import com.usermanagement.usermanagement.mail.MailService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.context.annotation.Configuration;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.PathVariable;
 
