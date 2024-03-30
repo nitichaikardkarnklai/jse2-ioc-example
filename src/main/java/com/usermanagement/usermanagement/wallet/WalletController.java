@@ -14,10 +14,9 @@ public class WalletController {
 
     private final WalletService walletService;
 
-   public WalletController(WalletService walletService) {
+    public WalletController(WalletService walletService) {
         this.walletService = walletService;
-   }
-
+    }
 
     @GetMapping("")
     public List<Wallet> getWalletList() {
