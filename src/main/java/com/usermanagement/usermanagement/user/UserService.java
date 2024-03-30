@@ -33,10 +33,10 @@ public class UserService {
         return users;
     }
 
-    public User createUser(UserRequest request) {
+    public User createUser(UserRequestDTO request) {
         Optional<Integer> maxId = users.stream().map(User::getId).max(Integer::compareTo);
         int newId = maxId.orElse(0) + 1;
-        User newUser = new User(newId, request.name(), request.age(), true);
+        User newUser = new User(newId, request.getName(), request.getAge(), true);
         users.add(newUser);
 
         //send email

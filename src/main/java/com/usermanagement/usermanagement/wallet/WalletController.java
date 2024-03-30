@@ -1,5 +1,9 @@
 package com.usermanagement.usermanagement.wallet;
 
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -16,12 +20,17 @@ public class WalletController {
 
 
     @GetMapping("")
-    public List<Wallet> getUserList() {
+    public List<Wallet> getWalletList() {
         return walletService.getWalletList();
     }
 
+    @GetMapping("/{id}")
+    public Wallet getWalletById(@PathVariable Integer id) {
+        return walletService.getWalletById(id);
+    }
+
     @PostMapping("")
-    public Wallet createUser(@RequestBody WalletRequestDto requestDto) {
+    public Wallet createWallet(@Validated @RequestBody WalletRequestDto requestDto) {
         return walletService.createWallet(requestDto);
     }
 
@@ -37,4 +46,10 @@ public class WalletController {
 
 }
 
-record WalletRequestDto(String name) {}
+record WalletRequestDto(
+        @NotNull(message = "name cannot be null")
+        @Size(min = 3, max = 20, message = "Wallet name should be between 3 and 20 characters")
+        String name,
+        @NotNull(message = "Email cannot be null")
+        @Email(message = "Email should be valid")
+        String email) {}

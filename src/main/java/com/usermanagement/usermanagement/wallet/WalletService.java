@@ -1,5 +1,8 @@
 package com.usermanagement.usermanagement.wallet;
 
+import com.usermanagement.usermanagement.exception.DuplicationException;
+import com.usermanagement.usermanagement.exception.InternalServiceException;
+import com.usermanagement.usermanagement.exception.NotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.PathVariable;
 
@@ -11,25 +14,39 @@ import java.util.Optional;
 public class WalletService {
 
     private List<Wallet> walletList = new ArrayList<>(
-            List.of(new Wallet(1,"Saving house"),
-                    new Wallet(2,"Saving car"))
+            List.of(new Wallet(1,"Saving house", "saving@gmail.com"),
+                    new Wallet(2,"Saving car", "savingcar@gmail.com"),
+                    new Wallet(3,"Penny wallet", "savingpenny@gmail.com"))
     );
 
 
     public List<Wallet> getWalletList() {
+        try {
+            // For test Exception
+            // callNormalService();
+        } catch (Exception e) {
+            throw new InternalServiceException("Internal service exception with Normal service");
+        }
         return walletList;
     }
 
     public Wallet createWallet(WalletRequestDto requestDto) {
-        Optional<Integer> maxId = walletList.stream()
-                .map(Wallet::getId)
-                .max(Integer::compareTo);
-        int nextId = maxId.orElse(0) + 1;
 
-        Wallet wallet = new Wallet(nextId,requestDto.name());
+            walletList.stream()
+                    .map(Wallet::getEmail)
+                    .filter( email -> email.equals(requestDto.email()))
+                    .findFirst()
+                    .ifPresent(wallet -> {
+                        throw new DuplicationException("Wallet with email: " + requestDto.email() + " is already exist");
+                    });
 
-        walletList.add(wallet);
-        return wallet;
+            Optional<Integer> maxId = walletList.stream()
+                    .map(Wallet::getId)
+                    .max(Integer::compareTo);
+            int nextId = maxId.orElse(0) + 1;
+            Wallet wallet = new Wallet(nextId,requestDto.name(), requestDto.email());
+            walletList.add(wallet);
+            return wallet;
     }
 
     public void deleteWalletById(@PathVariable Integer id) {
@@ -43,5 +60,16 @@ public class WalletService {
                 break;
             }
         }
+    }
+
+    public Wallet getWalletById(Integer id) {
+        return walletList.stream()
+                .filter(wallet -> wallet.getId().equals(id))
+                .findFirst()
+                .orElseThrow(() -> new NotFoundException("Wallet not found by id : "+id));
+    }
+
+    private void callNormalService() {
+        throw new RuntimeException();
     }
 }

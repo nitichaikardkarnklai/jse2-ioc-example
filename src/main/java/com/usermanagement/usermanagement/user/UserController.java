@@ -1,6 +1,11 @@
 package com.usermanagement.usermanagement.user;
 
+import jakarta.validation.Valid;
+import jakarta.validation.constraints.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -27,8 +32,8 @@ public class UserController {
     // POST: http://localhost:8080/api/users
     // req body => {name, age}
     @PostMapping("")
-    public User createUser(@RequestBody UserRequest request) {
-        return userService.createUser(request);
+    public ResponseEntity<User> createUser(@RequestBody @Valid UserRequestDTO request) {
+        return new ResponseEntity<>(userService.createUser(request), HttpStatus.CREATED);
     }
 
     // UPDATE
@@ -55,7 +60,10 @@ public class UserController {
     }
 }
 
-record UserRequest(String name, int age) {
+// User Request DTO (Data Transfer Object)
+record UserRequest(
+        String name,
+        int age) {
 }
 
 record Message(String message) {
@@ -92,5 +100,24 @@ class User {
 
     public Boolean getActive() {
         return active;
+    }
+}
+
+class UserRequestDTO {
+    @NotBlank(message = "Invalid Name: Empty name")
+    @NotNull(message = "Invalid Name: Name is NULL")
+    @Size(min = 3, max = 30, message = "Invalid Name: Must be of 3 - 30 characters")
+    String name;
+
+    @Min(value = 1, message = "Invalid Age: Equals to zero or Less than zero")
+    @Max(value = 100, message = "Invalid Age: Exceeds 100 years")
+    Integer age;
+
+    public String getName() {
+        return name;
+    }
+
+    public int getAge() {
+        return  age;
     }
 }
