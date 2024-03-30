@@ -8,6 +8,9 @@ public class GoogleMailService implements MailService {
     private String port;
 
     public GoogleMailService() {
+        // dev-smtp.google.com
+        // test-smtp.google.com
+        // smtp.google.com
         this.setUrl("smtp.google.com");
         this.setPort("465");
     }
