@@ -1,10 +1,9 @@
 package com.usermanagement.usermanagement.profile;
 
 import com.usermanagement.usermanagement.wallet.Wallet;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.OneToMany;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotNull;
 
 import java.util.List;
 
@@ -13,6 +12,11 @@ import java.util.List;
 public class Profile {
 
     @Id
+    @GeneratedValue(strategy  = GenerationType.IDENTITY)
+    private Integer id;
+
+    @NotNull
+    @Email
     private String email;
 
     private  String name;
@@ -26,5 +30,13 @@ public class Profile {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public String getName() {
+        return name;
     }
 }

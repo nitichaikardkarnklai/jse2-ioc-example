@@ -31,8 +31,13 @@ public class WalletController {
         return walletService.getWalletById(id);
     }
 
+//    @PostMapping("")
+//    public Wallet createWallet(@Valid @RequestBody WalletRequestDto requestDto) throws Exception {
+//        return this.walletService.createWallet(requestDto);
+//    }
+
     @PostMapping("")
-    public Wallet createWallet(@Valid @RequestBody WalletRequestDto requestDto) throws Exception {
+    public Wallet createWallet(@RequestBody WalletRequestDto requestDto) throws Exception {
         return this.walletService.createWallet(requestDto);
     }
 

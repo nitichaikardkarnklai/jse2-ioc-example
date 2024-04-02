@@ -2,6 +2,8 @@ package com.usermanagement.usermanagement.wallet;
 
 import com.usermanagement.usermanagement.profile.Profile;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
 
 @Entity
 @Table(name="wallet")
@@ -10,6 +12,9 @@ public class Wallet {
     @Id
     @GeneratedValue(strategy  = GenerationType.IDENTITY)
     private Integer id;
+
+    @NotNull
+    @Size(min = 3, max = 20)
     private String walletName;
 
     private Boolean active;
@@ -17,7 +22,7 @@ public class Wallet {
 //    private String email;
 
     @ManyToOne
-    @JoinColumn(name = "profile_email")
+    @JoinColumn(name = "profile_email", referencedColumnName = "email")
     private Profile profile;
 
     public Wallet() {
