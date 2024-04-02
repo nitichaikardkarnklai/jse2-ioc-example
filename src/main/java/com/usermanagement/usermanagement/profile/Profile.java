@@ -19,4 +19,12 @@ public class Profile {
 
     @OneToMany(mappedBy = "profile")
     private List<Wallet> walletList;
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
 }
