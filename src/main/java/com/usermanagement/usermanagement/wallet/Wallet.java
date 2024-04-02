@@ -1,16 +1,26 @@
 package com.usermanagement.usermanagement.wallet;
 
+import com.usermanagement.usermanagement.profile.Profile;
+import jakarta.persistence.*;
+
+@Entity
+@Table(name="wallet")
 public class Wallet {
 
+    @Id
+    @GeneratedValue(strategy  = GenerationType.IDENTITY)
     private Integer id;
-    private String name;
+    private String walletName;
 
-    private String email;
+    private Boolean active;
 
-    public Wallet(Integer id, String name, String email) {
-        this.id = id;
-        this.name = name;
-        this.email = email;
+//    private String email;
+
+    @ManyToOne
+    @JoinColumn(name = "profile_email")
+    private Profile profile;
+
+    public Wallet() {
     }
 
     public Integer getId() {
@@ -21,19 +31,27 @@ public class Wallet {
         this.id = id;
     }
 
-    public String getName() {
-        return name;
+    public String getWalletName() {
+        return walletName;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setWalletName(String walletName) {
+        this.walletName = walletName;
     }
 
-    public String getEmail() {
-        return email;
+    public Boolean getActive() {
+        return active;
     }
 
-    public void setEmail(String email) {
-        this.email = email;
+    public void setActive(Boolean active) {
+        this.active = active;
+    }
+
+    public Profile getProfile() {
+        return profile;
+    }
+
+    public void setProfile(Profile profile) {
+        this.profile = profile;
     }
 }

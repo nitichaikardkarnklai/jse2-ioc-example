@@ -1,0 +1,4 @@
+mail-provider:
+  google:
+    url: smtp.google.com
+    url-port: 465
