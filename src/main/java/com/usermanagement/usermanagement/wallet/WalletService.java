@@ -1,5 +1,6 @@
 package com.usermanagement.usermanagement.wallet;
 
+import com.usermanagement.usermanagement.exception.BadRequestException;
 import com.usermanagement.usermanagement.exception.DuplicationException;
 import com.usermanagement.usermanagement.exception.InternalServiceException;
 import com.usermanagement.usermanagement.exception.NotFoundException;
@@ -31,51 +32,43 @@ public class WalletService {
         return walletList;
     }
 
-    public Wallet createWallet(WalletRequestDto requestDto) {
-//
-//            walletList.stream()
-//                    .map(Wallet::getEmail)
-//                    .filter( email -> email.equals(requestDto.email()))
-//                    .findFirst()
-//                    .ifPresent(wallet -> {
-//                        throw new DuplicationException("Wallet with email: " + requestDto.email() + " is already exist");
-//                    });
-//
-//            Optional<Integer> maxId = walletList.stream()
-//                    .map(Wallet::getId)
-//                    .max(Integer::compareTo);
-//            int nextId = maxId.orElse(0) + 1;
-//            Wallet wallet = new Wallet(nextId,requestDto.name(), requestDto.email());
-//            walletList.add(wallet);
-//
-//            mailService.sentEmail("admin@wallet.com", "New wallet created");
-//
-//            return wallet;
-        return null;
+    public Wallet createWallet(WalletRequestDto requestDto) throws Exception {
+        Wallet wallet = new Wallet();
+        wallet.setWalletName(requestDto.name());
+        wallet.setActive(true);
+        walletRepository.save(wallet);
+        return wallet;
     }
 
-    public void deleteWalletById(@PathVariable Integer id) {
-//        walletList.removeIf(user -> user.getId().equals(id));
-    }
+    public Wallet editWalletById(Integer id, WalletRequestDto requestDto) {
+        Optional<Wallet> optionalWallet = walletRepository.findById(Long.valueOf(id));
+        if (optionalWallet.isEmpty()) {
+            throw new BadRequestException("Invalid wallet id");
+        }
 
-    public void editWalletById(Integer id, WalletRequestDto requestDto) {
-//        for (Wallet wallet: walletList) {
-//            if (wallet.getId().equals(id)) {
-//                wallet.setName(requestDto.name());
-//                break;
-//            }
-//        }
+        Wallet wallet = optionalWallet.get();
+        wallet.setWalletName((requestDto.name()));
+        walletRepository.save(wallet);
+        return wallet;
     }
 
     public Wallet getWalletById(Integer id) {
-//        return walletList.stream()
-//                .filter(wallet -> wallet.getId().equals(id))
-//                .findFirst()
-//                .orElseThrow(() -> new NotFoundException("Wallet not found by id : "+id));
-        return null;
+        Optional<Wallet> optionalWallet = walletRepository.findById(Long.valueOf(id));
+        if (optionalWallet.isEmpty()) {
+            throw new BadRequestException("Invalid wallet id");
+        }
+
+        Wallet wallet = optionalWallet.get();
+        return wallet;
     }
 
-    private void callNormalService() {
-        throw new RuntimeException();
+    public void deleteWalletById(@PathVariable Integer id) {
+        walletRepository.deleteById(Long.valueOf(id));
     }
+
+    // NOT IMPLEMENT
+//    public void activeAllWallet() {
+//        walletRepository.setAllWalletActive();
+//        // walletRepository.deleteWalletByIdBelow3();
+//    }
 }

@@ -1,8 +1,11 @@
 package com.usermanagement.usermanagement.wallet;
 
+import com.usermanagement.usermanagement.profile.Profile;
+import jakarta.validation.Valid;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
+import org.apache.coyote.BadRequestException;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
@@ -29,8 +32,8 @@ public class WalletController {
     }
 
     @PostMapping("")
-    public Wallet createWallet(@Validated @RequestBody WalletRequestDto requestDto) {
-        return walletService.createWallet(requestDto);
+    public Wallet createWallet(@Valid @RequestBody WalletRequestDto requestDto) throws Exception {
+        return this.walletService.createWallet(requestDto);
     }
 
     @DeleteMapping("/{id}")
@@ -39,8 +42,8 @@ public class WalletController {
     }
 
     @PutMapping("/{id}")
-    public void editWallet(@PathVariable Integer id, @RequestBody WalletRequestDto requestDto) {
-        this.walletService.editWalletById(id, requestDto);
+    public Wallet editWallet(@PathVariable Integer id, @RequestBody WalletRequestDto requestDto) {
+        return this.walletService.editWalletById(id, requestDto);
     }
 
 }
@@ -51,4 +54,5 @@ record WalletRequestDto(
         String name,
         @NotNull(message = "Email cannot be null")
         @Email(message = "Email should be valid")
-        String email) {}
+        String email){}
+
