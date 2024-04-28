@@ -43,6 +43,7 @@ public class WalletService {
     @Transactional
     public Wallet createWallet(WalletRequestDto requestDto) throws Exception {
         Optional<Profile> optionalProfile = profileRepository.findByEmail(requestDto.email());
+        Optional<Profile> optionalProfile2 = profileRepository.findByName(requestDto.name());
         Profile profile;
         if(optionalProfile.isPresent()) {
             profile = optionalProfile.get();
